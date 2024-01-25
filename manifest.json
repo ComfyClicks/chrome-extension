@@ -4,9 +4,16 @@
     "description": "This is an extension that tracks the sunset based on user's locations",
     "manifest_version": 3,
     "author": "Team Sunset",
+    "permissions": ["storage"],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["main.js"]
+        }
+    ],
     "action": {
         "default_popup": "index.html",
-        "default_title": "Sunset Tracker"
+        "default_title": "Sunset Tracker",
+        "default_icon": "sunset-logo.png"
     }
-
 }
