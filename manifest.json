@@ -1,0 +1,12 @@
+{
+    "name": "Sunset Tracker",
+    "version": "1.0.0",
+    "description": "This is an extension that tracks the sunset based on user's locations",
+    "manifest_version": 3,
+    "author": "Team Sunset",
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "Sunset Tracker"
+    }
+
+}
