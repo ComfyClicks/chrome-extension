@@ -1,41 +1,23 @@
-const apiKey = 'qGgpFFxDEDzPwlTbfIVdyPque7bG3KN2';
-const locationKey = '37881_PC'; // locationKey for Los Angeles, CA
 
-// Read the counter and the day from the storage
-chrome.storage.local.get('data', result => {
-  let jsonData = result.data || {counter: 0, date: null, data: {}};
-  let counter = jsonData.counter;
-  let storedDate = new Date(jsonData.date);
+document.addEventListener('DOMContentLoaded', function() {
+  const apiKey = '5HqJ14xp14CAsFnQltVOEQowGAeN6jvc';
+  const locationKey = '37881_PC'; // locationKey for Los Angeles, CA
 
-  // Get the current date
-  let currentDate = new Date();
+  // Fetch the data from the API
+  fetch(`https://dataservice.accuweather.com/forecasts/v1/daily/1day/${locationKey}?apikey=${apiKey}&details=true`)
 
-  if (currentDate.toDateString() !== storedDate.toDateString()) {
-    // If the stored date is different from the current date, reset the counter
-    counter = 0;
-  }
+    .then(response => response.json())
+    .then((data) => {
+      console.log(data);
 
-  if (counter < 5) {
-    fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}?apikey=${apiKey}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        // Increment the counter and write it back to the storage
-        counter++;
-        jsonData.counter = counter;
-        jsonData.date = currentDate;
-        jsonData.data = data;
-        chrome.storage.local.set({data: jsonData});
+      // Write the data to the storage
+      chrome.storage.local.set({data: data});
 
-        // DOM manipulation to put sunset time in
-        const sunsetTime = document.createElement('div')
-        sunsetTime.innerText = jsonData.data;
-        document.getElementById('data').appendChild(sunsetTime);
-        console.log(jsonData);
-      })
-      .catch(error => console.error('Error:', error));
-  } else {
-    console.log('API call limit reached for today');
-  }
-});
-
+      // DOM manipulation to put sunset time in
+      const sunsetTime = document.createElement('div')
+      sunsetTime.innerText = data.DailyForecasts[0].Sun.Set;
+      document.getElementById('data').appendChild(sunsetTime);
+      console.log(data);
+    })
+    .catch(error => console.error('Error:', error));
+  });
